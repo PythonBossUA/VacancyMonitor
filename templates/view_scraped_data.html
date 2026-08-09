@@ -11,6 +11,9 @@
             --primary-hover: #1d4ed8;
             --success: #16a34a;
             --success-hover: #15803d;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --warning: #f59e0b;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --border: #e2e8f0;
@@ -49,7 +52,6 @@
         }
 
         h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-
         .stats { color: var(--text-muted); font-size: 0.95rem; }
 
         .btn-scrap {
@@ -73,40 +75,35 @@
             box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
         }
 
-        /* ===== ФОРМА ФІЛЬТРІВ ===== */
+        /* Фільтри */
         .filters-form {
             display: flex;
             gap: 0.5rem;
-            max-width: 800px;
+            max-width: 1000px;
             flex-wrap: wrap;
         }
 
-        .filters-form input[type="text"] {
-            flex: 1;
-            min-width: 200px;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-
-        .filters-form input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
+        .filters-form input[type="text"],
         .filters-form select {
             padding: 0.75rem 1rem;
             border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
             background: white;
-            cursor: pointer;
-            min-width: 200px;
             transition: border-color 0.2s;
         }
 
+        .filters-form input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filters-form select {
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        .filters-form input:focus,
         .filters-form select:focus {
             outline: none;
             border-color: var(--primary);
@@ -123,9 +120,7 @@
             transition: background 0.2s;
         }
 
-        .filters-form button:hover {
-            background: var(--primary-hover);
-        }
+        .filters-form button:hover { background: var(--primary-hover); }
 
         .btn-reset {
             padding: 0.75rem 1.5rem;
@@ -140,31 +135,9 @@
             transition: all 0.2s;
         }
 
-        .btn-reset:hover {
-            background: var(--bg);
-            color: var(--text);
-        }
+        .btn-reset:hover { background: var(--bg); color: var(--text); }
 
-        /* Активний фільтр */
-        .active-filter {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            padding: 0.4rem 0.8rem;
-            background: #dbeafe;
-            color: var(--primary);
-            border-radius: 20px;
-            font-size: 0.875rem;
-        }
-
-        .active-filter a {
-            color: var(--primary);
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        /* ===== СПИСОК ВАКАНСІЙ ===== */
+        /* Список вакансій */
         .vacancy-list { display: grid; gap: 1rem; }
 
         .vacancy-card {
@@ -183,6 +156,18 @@
             transform: translateY(-2px);
         }
 
+        /* Картки зі статусом */
+        .vacancy-card.status-applied {
+            border-left: 4px solid var(--success);
+            background: #f0fdf4;
+        }
+
+        .vacancy-card.status-not_interested {
+            border-left: 4px solid var(--danger);
+            background: #fef2f2;
+            opacity: 0.75;
+        }
+
         .vacancy-title {
             font-size: 1.25rem;
             font-weight: 600;
@@ -198,6 +183,7 @@
             gap: 1rem;
             font-size: 0.9rem;
             color: var(--text-muted);
+            align-items: center;
         }
 
         .meta-item { display: flex; align-items: center; gap: 0.4rem; }
@@ -213,10 +199,41 @@
             font-weight: 500;
         }
 
+        /* Бейджі статусів */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.applied {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.not_interested {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.none {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        /* Кнопки дій */
         .vacancy-actions {
             margin-top: auto;
             padding-top: 0.75rem;
             border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .btn-view {
@@ -233,7 +250,59 @@
 
         .btn-view:hover { background: var(--primary-hover); }
 
-        /* ===== ПАГІНАЦІЯ ===== */
+        /* Група кнопок статусу */
+        .status-buttons {
+            display: flex;
+            gap: 0.4rem;
+            margin-left: auto;
+        }
+
+        .status-btn {
+            padding: 0.4rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .status-btn:hover { transform: translateY(-1px); }
+
+        .status-btn.btn-applied {
+            color: var(--success);
+            border-color: #bbf7d0;
+        }
+        .status-btn.btn-applied:hover,
+        .status-btn.btn-applied.active {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .status-btn.btn-not-interested {
+            color: var(--danger);
+            border-color: #fecaca;
+        }
+        .status-btn.btn-not-interested:hover,
+        .status-btn.btn-not-interested.active {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        .status-btn.btn-clear {
+            color: var(--text-muted);
+        }
+        .status-btn.btn-clear:hover,
+        .status-btn.btn-clear.active {
+            background: #64748b;
+            color: white;
+            border-color: #64748b;
+        }
+
+        /* Пагінація */
         .pagination {
             display: flex;
             justify-content: center;
@@ -268,7 +337,6 @@
 
         .pagination .disabled {
             color: var(--text-muted);
-            cursor: not-allowed;
             opacity: 0.5;
         }
 
@@ -289,6 +357,8 @@
             .filters-form { flex-direction: column; }
             .filters-form select { width: 100%; }
             .header-top { flex-direction: column; align-items: stretch; }
+            .status-buttons { margin-left: 0; margin-top: 0.5rem; }
+            .vacancy-actions { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -300,72 +370,65 @@
                     <h1>🔍 Вакансії</h1>
                     <p class="stats">
                         Знайдено <strong>{{ total_count }}</strong> вакансій
-                        {% if search_query or selected_category %}
-                            за фільтром:
-                            {% if search_query %}"{{ search_query }}"{% endif %}
-                            {% if selected_category %}· {{ selected_category }}{% endif %}
+                        {% if search_query or selected_category or selected_status %}
+                            за фільтром
                         {% endif %}
                     </p>
                 </div>
-
-                <a href="{% url 'scrap_data_view' %}" class="btn-scrap">
-                    🚀 Запустити скрапінг
-                </a>
+                <a href="{% url 'scrap_data_view' %}" class="btn-scrap">🚀 Запустити скрапінг</a>
             </div>
 
-            <!-- ===== ФОРМА З ПОШУКОМ ТА КАТЕГОРІЄЮ ===== -->
+            <!-- Фільтри -->
             <form method="get" class="filters-form">
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="Пошук за назвою або компанією..."
-                    value="{{ search_query }}"
-                    aria-label="Пошук вакансій"
-                >
+                <input type="text" name="search" placeholder="Пошук за назвою або компанією..."
+                       value="{{ search_query }}" aria-label="Пошук">
 
-                <select name="category" aria-label="Фільтр за категорією" onchange="this.form.submit()">
+                <select name="category" onchange="this.form.submit()" aria-label="Категорія">
                     <option value="">📂 Усі категорії</option>
-                    {% for category in categories %}
-                        <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>
-                            {{ category }}
-                        </option>
+                    {% for cat in categories %}
+                        <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
                     {% endfor %}
+                </select>
+
+                <select name="status" onchange="this.form.submit()" aria-label="Статус">
+                    <option value="">📋 Усі статуси</option>
+                    <option value="applied" {% if selected_status == "applied" %}selected{% endif %}>✅ Відгукнувся</option>
+                    <option value="not_interested" {% if selected_status == "not_interested" %}selected{% endif %}>❌ Не цікаво</option>
+                    <option value="none" {% if selected_status == "none" %}selected{% endif %}>⚪ Без статусу</option>
                 </select>
 
                 <button type="submit">Шукати</button>
 
-                {% if search_query or selected_category %}
+                {% if search_query or selected_category or selected_status %}
                     <a href="{% url 'scraped_data_view' %}" class="btn-reset">✕ Скинути</a>
                 {% endif %}
             </form>
-
-            {% if selected_category %}
-                <div class="active-filter">
-                    📂 Категорія: <strong>{{ selected_category }}</strong>
-                    <a href="?{% if search_query %}search={{ search_query|urlencode }}{% endif %}" title="Прибрати фільтр категорії">✕</a>
-                </div>
-            {% endif %}
         </header>
 
         {% if vacancies %}
             <div class="vacancy-list">
                 {% for vacancy in vacancies %}
-                    <article class="vacancy-card">
+                    <article class="vacancy-card {% if vacancy.status %}status-{{ vacancy.status }}{% endif %}">
                         <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer" class="vacancy-title">
                             {{ vacancy.name }}
                         </a>
 
                         <div class="vacancy-meta">
-                            <div class="meta-item">
-                                🏢 <span class="company-name">{{ vacancy.company.name }}</span>
-                            </div>
+                            <div class="meta-item">🏢 <span class="company-name">{{ vacancy.company.name }}</span></div>
                             {% if vacancy.publication_date %}
-                                <div class="meta-item">
-                                    📅 {{ vacancy.publication_date }}
-                                </div>
+                                <div class="meta-item">📅 {{ vacancy.publication_date }}</div>
                             {% endif %}
                             {% if vacancy.category %}
                                 <span class="category-badge">{{ vacancy.category }}</span>
+                            {% endif %}
+
+                            <!-- Бейдж статусу -->
+                            {% if vacancy.status == "applied" %}
+                                <span class="status-badge applied">✅ Відгукнувся</span>
+                            {% elif vacancy.status == "not_interested" %}
+                                <span class="status-badge not_interested">❌ Не цікаво</span>
+                            {% else %}
+                                <span class="status-badge none">⚪ Без статусу</span>
                             {% endif %}
                         </div>
 
@@ -373,16 +436,46 @@
                             <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer" class="btn-view">
                                 Переглянути на DOU →
                             </a>
+
+                            <!-- Кнопки зміни статусу -->
+                            <div class="status-buttons">
+                                <form method="post" action="{% url 'update_vacancy_status' vacancy.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="applied">
+                                    <button type="submit" class="status-btn btn-applied {% if vacancy.status == 'applied' %}active{% endif %}">
+                                        ✅ Відгукнувся
+                                    </button>
+                                </form>
+
+                                <form method="post" action="{% url 'update_vacancy_status' vacancy.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="not_interested">
+                                    <button type="submit" class="status-btn btn-not-interested {% if vacancy.status == 'not_interested' %}active{% endif %}">
+                                        ❌ Не цікаво
+                                    </button>
+                                </form>
+
+                                {% if vacancy.status %}
+                                    <form method="post" action="{% url 'update_vacancy_status' vacancy.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="">
+                                        <button type="submit" class="status-btn btn-clear">
+                                            ⚪ Скинути
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </div>
                     </article>
                 {% endfor %}
             </div>
 
+            <!-- Пагінація -->
             {% if vacancies.has_other_pages %}
-                <nav class="pagination" aria-label="Навігація по сторінках">
+                <nav class="pagination" aria-label="Навігація">
                     {% if vacancies.has_previous %}
-                        <a href="?page=1{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">« Перша</a>
-                        <a href="?page={{ vacancies.previous_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">← Попередня</a>
+                        <a href="?page=1{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">« Перша</a>
+                        <a href="?page={{ vacancies.previous_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">← Попередня</a>
                     {% else %}
                         <span class="disabled">« Перша</span>
                         <span class="disabled">← Попередня</span>
@@ -392,17 +485,17 @@
                         {% if vacancies.number == num %}
                             <span class="current">{{ num }}</span>
                         {% elif num > vacancies.number|add:'-5' and num < vacancies.number|add:'5' %}
-                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">{{ num }}</a>
+                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">{{ num }}</a>
                         {% elif num == 1 or num == vacancies.paginator.num_pages %}
-                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">{{ num }}</a>
+                            <a href="?page={{ num }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">{{ num }}</a>
                         {% elif num == vacancies.number|add:'-5' or num == vacancies.number|add:'5' %}
                             <span>...</span>
                         {% endif %}
                     {% endfor %}
 
                     {% if vacancies.has_next %}
-                        <a href="?page={{ vacancies.next_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">Наступна →</a>
-                        <a href="?page={{ vacancies.paginator.num_pages }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}">Остання »</a>
+                        <a href="?page={{ vacancies.next_page_number }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">Наступна →</a>
+                        <a href="?page={{ vacancies.paginator.num_pages }}{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status }}{% endif %}">Остання »</a>
                     {% else %}
                         <span class="disabled">Наступна →</span>
                         <span class="disabled">Остання »</span>
@@ -414,17 +507,14 @@
             <div class="empty-state">
                 <h2>Вакансій не знайдено</h2>
                 <p>
-                    {% if search_query or selected_category %}
-                        Спробуйте змінити фільтри або
-                        <a href="{% url 'scraped_data_view' %}">очистити їх</a>.
+                    {% if search_query or selected_category or selected_status %}
+                        Спробуйте змінити фільтри або <a href="{% url 'scraped_data_view' %}">очистити їх</a>.
                     {% else %}
                         База даних порожня. Запустіть скрапінг для заповнення.
                     {% endif %}
                 </p>
-                {% if not search_query and not selected_category %}
-                    <a href="{% url 'scrap_data_view' %}" class="btn-scrap">
-                        🚀 Запустити скрапінг
-                    </a>
+                {% if not search_query and not selected_category and not selected_status %}
+                    <a href="{% url 'scrap_data_view' %}" class="btn-scrap">🚀 Запустити скрапінг</a>
                 {% endif %}
             </div>
         {% endif %}

@@ -1,8 +1,9 @@
 import threading
 
-from django.shortcuts import render
 from app.tasks import scrap_data
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.http import require_POST
 from django.db.models import Q
 from .models import Vacancy
 
@@ -12,6 +13,7 @@ def view_scraped_data(request):
 
     search_query = request.GET.get("search", "").strip()
     selected_category = request.GET.get("category", "").strip()
+    selected_status = request.GET.get("status", "").strip()
 
     categories = (
         Vacancy.objects
@@ -27,6 +29,11 @@ def view_scraped_data(request):
 
     if selected_category:
         queryset = queryset.filter(category=selected_category)
+
+    if selected_status == "none":
+        queryset = queryset.filter(status__isnull=True)
+    elif selected_status:
+        queryset = queryset.filter(status=selected_status)
 
     paginator = Paginator(queryset, 50)
     page = request.GET.get("page")
@@ -44,9 +51,26 @@ def view_scraped_data(request):
         "search_query": search_query,
         "categories": categories,
         "selected_category": selected_category,
+        "selected_status": selected_status,
+        "status_choices": Vacancy.STATUS_CHOICES,
     }
 
     return render(request, "view_scraped_data.html", context=context)
+
+
+@require_POST
+def update_vacancy_status(request, vacancy_id):
+    vacancy = get_object_or_404(Vacancy, id=vacancy_id)
+
+    new_status = request.POST.get("status", "").strip()
+    valid_statuses = [choice[0] for choice in Vacancy.STATUS_CHOICES]
+    if new_status in valid_statuses:
+        vacancy.status = new_status
+    else:
+        vacancy.status = None
+
+    vacancy.save(update_fields=["status"])
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
 def start_scrap_data(request):

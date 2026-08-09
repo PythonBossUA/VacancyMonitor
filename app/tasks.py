@@ -173,5 +173,3 @@ def scrap_data():
             logger.exception(f"Критична помилка в scrap_data: {e}")
         finally:
             client.close()
-
-scrap_data()
