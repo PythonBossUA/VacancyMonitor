@@ -8,17 +8,16 @@ from .models import Vacancy
 
 
 def view_scraped_data(request):
-    queryset = Vacancy.objects.select_related('company').order_by('id')
+    queryset = Vacancy.objects.select_related("company").order_by("id")
 
-    search_query = request.GET.get('search', '').strip()
+    search_query = request.GET.get("search", "").strip()
     if search_query:
         queryset = queryset.filter(
-            Q(name__icontains=search_query) |
-            Q(company__name__icontains=search_query)
+            Q(name__icontains=search_query) | Q(company__name__icontains=search_query)
         )
 
     paginator = Paginator(queryset, 50)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
 
     try:
         vacancies = paginator.page(page)

@@ -19,7 +19,9 @@ def scrap_data():
                 vacancy_categories_res = client.get("https://jobs.dou.ua/")
                 vacancy_categories_res.raise_for_status()
             except httpx.HTTPStatusError as e:
-                logger.error(f"HTTP помилка при завантаженні головної сторінки: {e.response.status_code}")
+                logger.error(
+                    f"HTTP помилка при завантаженні головної сторінки: {e.response.status_code}"
+                )
                 return
             except httpx.RequestError as e:
                 logger.error(f"Помилка мережі при завантаженні головної сторінки: {e}")
@@ -41,14 +43,14 @@ def scrap_data():
                 while True:
                     try:
                         response = client.post(
-                            api_url,
-                            headers={"Referer": api_url},
-                            data=data
+                            api_url, headers={"Referer": api_url}, data=data
                         )
                         response.raise_for_status()
                         vacancies_data = response.json()
                     except httpx.HTTPStatusError as e:
-                        logger.error(f"HTTP помилка для {api_url}: {e.response.status_code}")
+                        logger.error(
+                            f"HTTP помилка для {api_url}: {e.response.status_code}"
+                        )
                         break
                     except httpx.RequestError as e:
                         logger.error(f"Помилка мережі для {api_url}: {e}")
@@ -75,32 +77,42 @@ def scrap_data():
                         try:
                             vacancy_title = block.select_one("a.vt")
                             if not vacancy_title:
-                                logger.warning("Знайдено блок без заголовка вакансії, пропущено")
+                                logger.warning(
+                                    "Знайдено блок без заголовка вакансії, пропущено"
+                                )
                                 continue
 
                             name = vacancy_title.text.strip()
                             url = vacancy_title["href"].strip().rsplit("?")[0]
 
                             company_el = block.select_one("strong > a")
-                            company = company_el.text.strip() if company_el else "Unknown"
+                            company = (
+                                company_el.text.strip() if company_el else "Unknown"
+                            )
 
                             date_el = block.select_one("div.date")
                             date = date_el.text.strip() if date_el else ""
 
                             if not name or not url:
-                                logger.warning(f"Пропущено вакансію: відсутнє ім'я або URL")
+                                logger.warning(
+                                    f"Пропущено вакансію: відсутнє ім'я або URL"
+                                )
                                 continue
 
-                            company_object, created = Company.objects.get_or_create(name=company)
+                            company_object, created = Company.objects.get_or_create(
+                                name=company
+                            )
                             if created:
                                 logger.debug(f"Створено нову компанію: {company}")
 
-                            vacancies_objects.append(Vacancy(
-                                name=name,
-                                url=url,
-                                company=company_object,
-                                publication_date=date
-                            ))
+                            vacancies_objects.append(
+                                Vacancy(
+                                    name=name,
+                                    url=url,
+                                    company=company_object,
+                                    publication_date=date,
+                                )
+                            )
 
                         except Exception as e:
                             logger.error(f"Помилка обробки блоку вакансії: {e}")
@@ -108,8 +120,12 @@ def scrap_data():
 
                     try:
                         if vacancies_objects:
-                            Vacancy.objects.bulk_create(vacancies_objects, ignore_conflicts=True)
-                            logger.info(f"Збережено {len(vacancies_objects)} вакансій для {api_url}")
+                            Vacancy.objects.bulk_create(
+                                vacancies_objects, ignore_conflicts=True
+                            )
+                            logger.info(
+                                f"Збережено {len(vacancies_objects)} вакансій для {api_url}"
+                            )
                     except (IntegrityError, DatabaseError) as e:
                         logger.error(f"Помилка бази даних при збереженні: {e}")
                     except Exception as e:
