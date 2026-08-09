@@ -2,12 +2,19 @@ from pathlib import Path
 from os import getenv as os_getenv
 from secrets import token_hex
 
-
 # Base settings
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os_getenv("SECRET_KEY", token_hex(32))
-DEBUG = bool(os_getenv("DEBUG", False))
-ALLOWED_HOSTS = []
+
+DEBUG = os_getenv("DEBUG", "FALSE").upper() == "TRUE"
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    # SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = [".onrender.com"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -18,8 +25,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
 ]
 
 ROOT_URLCONF = "server.urls"
@@ -39,7 +46,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "server.wsgi.application"
 
-
 # Database
 DATABASES = {
     "default": {
@@ -49,7 +55,9 @@ DATABASES = {
 }
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGGING = {
     'version': 1,
