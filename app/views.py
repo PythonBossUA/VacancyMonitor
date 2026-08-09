@@ -11,10 +11,22 @@ def view_scraped_data(request):
     queryset = Vacancy.objects.select_related("company").order_by("id")
 
     search_query = request.GET.get("search", "").strip()
+    selected_category = request.GET.get("category", "").strip()
+
+    categories = (
+        Vacancy.objects
+        .values_list("category", flat=True)
+        .distinct()
+        .order_by("category")
+    )
+
     if search_query:
         queryset = queryset.filter(
             Q(name__icontains=search_query) | Q(company__name__icontains=search_query)
         )
+
+    if selected_category:
+        queryset = queryset.filter(category=selected_category)
 
     paginator = Paginator(queryset, 50)
     page = request.GET.get("page")
@@ -30,6 +42,8 @@ def view_scraped_data(request):
         "vacancies": vacancies,
         "total_count": paginator.count,
         "search_query": search_query,
+        "categories": categories,
+        "selected_category": selected_category,
     }
 
     return render(request, "view_scraped_data.html", context=context)

@@ -1,5 +1,6 @@
 import logging
 import httpx
+from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 from django.db import IntegrityError, DatabaseError, transaction
 from app.models import Company, Vacancy
@@ -82,6 +83,14 @@ def scrap_data():
                                 )
                                 continue
 
+                            category = (
+                                parse_qs(
+                                    urlparse(api_url).query
+                                ).get("category")
+                            )
+                            if isinstance(category, list):
+                                category = category[0]
+
                             name = vacancy_title.text.strip()
                             url = vacancy_title["href"].strip().rsplit("?")[0]
 
@@ -111,6 +120,7 @@ def scrap_data():
                                     url=url,
                                     company=company_object,
                                     publication_date=date,
+                                    category=category
                                 )
                             )
 
