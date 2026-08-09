@@ -1,5 +1,6 @@
 import logging
 import httpx
+from datetime import date as datetime_date
 from urllib.parse import urlparse, parse_qs
 from bs4 import BeautifulSoup
 from django.db import IntegrityError, DatabaseError, transaction
@@ -8,7 +9,25 @@ from app.models import Company, Vacancy
 logger = logging.getLogger(__name__)
 
 
+MONTHS = {
+    "січня": 1,
+    "лютого": 2,
+    "березня": 3,
+    "квітня": 4,
+    "травня": 5,
+    "червня": 6,
+    "липня": 7,
+    "серпня": 8,
+    "вересня": 9,
+    "жовтня": 10,
+    "листопада": 11,
+    "грудня": 12,
+}
+
+
 def scrap_data():
+    current_year = datetime_date.today().year
+
     client = httpx.Client(timeout=30.0, follow_redirects=True)
 
     with transaction.atomic():
@@ -37,6 +56,15 @@ def scrap_data():
 
             for a_tag in soap.select("a.cat-link[href]"):
                 api_url = a_tag["href"].replace("?", "xhr-load/?")
+
+                category = (
+                    parse_qs(
+                        urlparse(api_url).query
+                    ).get("category")
+                )
+                if isinstance(category, list):
+                    category = category[0]
+
                 data = {"csrfmiddlewaretoken": csrf_token, "count": 0}
 
                 logger.info(f"Початок парсингу категорії: {api_url}")
@@ -83,14 +111,6 @@ def scrap_data():
                                 )
                                 continue
 
-                            category = (
-                                parse_qs(
-                                    urlparse(api_url).query
-                                ).get("category")
-                            )
-                            if isinstance(category, list):
-                                category = category[0]
-
                             name = vacancy_title.text.strip()
                             url = vacancy_title["href"].strip().rsplit("?")[0]
 
@@ -99,8 +119,11 @@ def scrap_data():
                                 company_el.text.strip() if company_el else "Unknown"
                             )
 
-                            date_el = block.select_one("div.date")
-                            date = date_el.text.strip() if date_el else ""
+                            raw_date_el = block.select_one("div.date")
+                            raw_date = raw_date_el.text.strip() if raw_date_el else ""
+
+                            day, _, month = raw_date.partition(" ")
+                            date = datetime_date(year=current_year, month=MONTHS[month], day=int(day))
 
                             if not name or not url:
                                 logger.warning(
@@ -150,3 +173,5 @@ def scrap_data():
             logger.exception(f"Критична помилка в scrap_data: {e}")
         finally:
             client.close()
+
+scrap_data()

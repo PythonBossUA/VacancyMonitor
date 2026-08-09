@@ -8,7 +8,7 @@ from .models import Vacancy
 
 
 def view_scraped_data(request):
-    queryset = Vacancy.objects.select_related("company").order_by("id")
+    queryset = Vacancy.objects.select_related("company").order_by("-publication_date")
 
     search_query = request.GET.get("search", "").strip()
     selected_category = request.GET.get("category", "").strip()
