@@ -11,8 +11,8 @@ def scrap_data():
     client = httpx.Client(timeout=30.0, follow_redirects=True)
 
     with transaction.atomic():
-        Company.objects.all().delete()
         Vacancy.objects.all().delete()
+        Company.objects.all().delete()
 
         try:
             try:

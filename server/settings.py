@@ -6,7 +6,7 @@ from secrets import token_hex
 # Base settings
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os_getenv("SECRET_KEY", token_hex(32))
-DEBUG = bool(os_getenv("DEBUG", True)) # TODO set True to False
+DEBUG = bool(os_getenv("DEBUG", False))
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -18,7 +18,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # "django.middleware.common.CommonMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
 ]

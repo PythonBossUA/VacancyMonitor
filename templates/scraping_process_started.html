@@ -1,10 +1,132 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скрапінг розпочато — VacancyMonitor</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 3rem 2.5rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: block;
+            padding: 0.875rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg);
+        }
+
+        .note {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 500px) {
+            .card { padding: 2rem 1.5rem; }
+            h1 { font-size: 1.4rem; }
+            .icon { font-size: 3rem; }
+        }
+    </style>
 </head>
 <body>
+    <div class="card">
+        <div class="icon">🚀</div>
 
+        <h1>Скрапінг розпочато!</h1>
+
+        <p class="description">
+            Процес збору вакансій з jobs.dou.ua запущено.
+            Дані оновлюються у фоновому режимі.
+        </p>
+
+        <div class="actions">
+            <a href="{% url 'scraped_data_view' %}" class="btn btn-secondary">
+                🏠 На головну
+            </a>
+        </div>
+
+        <p class="note">
+            💡 Нові вакансії з'являться у списку після завершення парсингу.
+        </p>
+    </div>
 </body>
 </html>
