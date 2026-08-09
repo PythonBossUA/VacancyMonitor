@@ -17,12 +17,9 @@ class Vacancy(models.Model):
     url = models.URLField(null=False, blank=False, unique=True)
     category = models.CharField(max_length=21, null=False, blank=False)
     status = models.CharField(
-        max_length=31,
-        null=True,
-        blank=True,
-        choices=STATUS_CHOICES,
-        default=None,
+        max_length=31, null=True, blank=True, choices=STATUS_CHOICES, default=None
     )
+    is_active = models.BooleanField(default=True)
 
     @property
     def status_display(self):

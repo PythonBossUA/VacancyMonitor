@@ -1,11 +1,12 @@
 import threading
 
-from app.tasks import scrap_data
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.db.models import Q
-from .models import Vacancy
+from app.models import Vacancy
+from app.tasks import scrap_data
 
 
 def view_scraped_data(request):
@@ -14,10 +15,10 @@ def view_scraped_data(request):
     search_query = request.GET.get("search", "").strip()
     selected_category = request.GET.get("category", "").strip()
     selected_status = request.GET.get("status", "").strip()
+    selected_is_active = request.GET.get("is_active", "").strip()
 
     categories = (
-        Vacancy.objects
-        .values_list("category", flat=True)
+        Vacancy.objects.values_list("category", flat=True)
         .distinct()
         .order_by("category")
     )
@@ -34,6 +35,11 @@ def view_scraped_data(request):
         queryset = queryset.filter(status__isnull=True)
     elif selected_status:
         queryset = queryset.filter(status=selected_status)
+
+    if selected_is_active == "1":
+        queryset = queryset.filter(is_active=True)
+    elif selected_is_active == "0":
+        queryset = queryset.filter(is_active=False)
 
     paginator = Paginator(queryset, 50)
     page = request.GET.get("page")
@@ -52,6 +58,7 @@ def view_scraped_data(request):
         "categories": categories,
         "selected_category": selected_category,
         "selected_status": selected_status,
+        "selected_is_active": selected_is_active,
         "status_choices": Vacancy.STATUS_CHOICES,
     }
 
@@ -70,6 +77,12 @@ def update_vacancy_status(request, vacancy_id):
         vacancy.status = None
 
     vacancy.save(update_fields=["status"])
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+@require_POST
+def delete_all_unactive_vacancies(request):
+    Vacancy.objects.filter(is_active=False).delete()
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 

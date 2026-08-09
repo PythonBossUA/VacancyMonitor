@@ -31,8 +31,7 @@ def scrap_data():
     client = httpx.Client(timeout=30.0, follow_redirects=True)
 
     with transaction.atomic():
-        Vacancy.objects.all().delete()
-        Company.objects.all().delete()
+        Vacancy.objects.all().update(is_active=False)
 
         try:
             try:
@@ -57,11 +56,10 @@ def scrap_data():
             for a_tag in soap.select("a.cat-link[href]"):
                 api_url = a_tag["href"].replace("?", "xhr-load/?")
 
-                category = (
-                    parse_qs(
-                        urlparse(api_url).query
-                    ).get("category")
-                )
+                category = parse_qs(urlparse(api_url).query).get("category")
+                if not category:
+                    continue
+
                 if isinstance(category, list):
                     category = category[0]
 
@@ -123,7 +121,9 @@ def scrap_data():
                             raw_date = raw_date_el.text.strip() if raw_date_el else ""
 
                             day, _, month = raw_date.partition(" ")
-                            date = datetime_date(year=current_year, month=MONTHS[month], day=int(day))
+                            date = datetime_date(
+                                year=current_year, month=MONTHS[month], day=int(day)
+                            )
 
                             if not name or not url:
                                 logger.warning(
@@ -143,7 +143,8 @@ def scrap_data():
                                     url=url,
                                     company=company_object,
                                     publication_date=date,
-                                    category=category
+                                    category=category,
+                                    is_active=True,
                                 )
                             )
 
@@ -154,7 +155,10 @@ def scrap_data():
                     try:
                         if vacancies_objects:
                             Vacancy.objects.bulk_create(
-                                vacancies_objects, ignore_conflicts=True
+                                vacancies_objects,
+                                unique_fields=["url"],
+                                update_fields=["is_active"],
+                                update_conflicts=True,
                             )
                             logger.info(
                                 f"Збережено {len(vacancies_objects)} вакансій для {api_url}"
