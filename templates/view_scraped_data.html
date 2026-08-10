@@ -4,457 +4,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0067c0">
     <title>Вакансії</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f6f8;
-            color: #222;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .page-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .page-header h1 {
-            margin: 0 0 8px;
-        }
-
-        .subtitle {
-            margin: 0;
-            color: #555;
-        }
-
-        .header-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .btn,
-        button {
-            display: inline-block;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 14px;
-            font-size: 14px;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        .btn-primary,
-        button[type="submit"] {
-            background: #007bff;
-            color: #fff;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: #fff;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: #fff;
-        }
-
-        .btn-light {
-            background: #e9ecef;
-            color: #222;
-        }
-
-        .filters {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
-
-        .filters-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 10px;
-            align-items: end;
-        }
-
-        .filter-label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #555;
-        }
-
-        .filters input[type="text"],
-        .filters select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #fff;
-        }
-
-        .filters-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .reset-link {
-            display: inline-block;
-            margin-top: 12px;
-            color: #dc3545;
-            text-decoration: none;
-        }
-
-        .vacancy-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .vacancy-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 18px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-        }
-
-        .vacancy-title {
-            margin: 0 0 8px;
-            font-size: 22px;
-        }
-
-        .vacancy-title a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .vacancy-title a:hover {
-            text-decoration: underline;
-        }
-
-        .vacancy-company {
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: #444;
-        }
-
-        .vacancy-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 13px;
-            background: #eef2f7;
-        }
-
-        .badge-green {
-            background: #e7f7ec;
-            color: #198754;
-        }
-
-        .badge-red {
-            background: #fdecec;
-            color: #dc3545;
-        }
-
-        .badge-blue {
-            background: #e9f3ff;
-            color: #0d6efd;
-        }
-
-        .badge-gray {
-            background: #f1f3f5;
-            color: #495057;
-        }
-
-        .vacancy-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .status-form {
-            display: inline-block;
-            margin: 0;
-        }
-
-        .pagination {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 25px;
-        }
-
-        .pagination a,
-        .pagination span {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            background: #fff;
-            color: #007bff;
-            border: 1px solid #dee2e6;
-        }
-
-        .pagination .current {
-            background: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
-
-        .pagination .disabled {
-            color: #999;
-            background: #f8f9fa;
-        }
-
-        .empty-state {
-            background: #fff;
-            border-radius: 10px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-        }
-
-        .empty-state h2 {
-            margin-top: 0;
-        }
-
-        .inline-form {
-            display: inline-block;
-        }
-
-        @media (max-width: 900px) {
-            .filters-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filters-actions {
-                justify-content: flex-start;
-            }
-        }
-    </style>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230067c0'/%3E%3Cpath d='M9 8V7a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 7v1h2.5A1.5 1.5 0 0 1 19 9.5v6A1.5 1.5 0 0 1 17.5 17h-11A1.5 1.5 0 0 1 5 15.5v-6A1.5 1.5 0 0 1 6.5 8H9Z' fill='white'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/win11.css' %}">
 </head>
 <body>
-    <div class="container">
-        <header class="page-header">
-            <div>
-                <h1>🔍 Вакансії</h1>
-                <p class="subtitle">
-                    Знайдено {{ total_count }} вакансій
+
+    <!-- Fluent icon sprite -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+        <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3.5 12.5h17"/>
+        </symbol>
+        <symbol id="i-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+        </symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="m19 6-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
+        </symbol>
+        <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"/>
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+        </symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/>
+        </symbol>
+        <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r=".8" fill="currentColor"/>
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 12.5l5 5L20 6.5"/>
+        </symbol>
+        <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 6l12 12M18 6L6 18"/>
+        </symbol>
+        <symbol id="i-circle-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8"/><path d="M8.5 12h7"/>
+        </symbol>
+        <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M20 13.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V6a1.5 1.5 0 0 1 1.5-1.5H11"/>
+        </symbol>
+        <symbol id="i-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M11 21v-3h2v3"/>
+        </symbol>
+        <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>
+        </symbol>
+        <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 12v5"/>
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+        </symbol>
+        <symbol id="i-reset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 2.6-6.3L3 8"/><path d="M3 3v5h5"/>
+        </symbol>
+        <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+        </symbol>
+        <symbol id="i-sparkle" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l2.2 5.8L20 10l-5.8 2.2L12 18l-2.2-5.8L4 10l5.8-2.2L12 2z"/>
+        </symbol>
+    </svg>
+
+    <!-- Living Mica background -->
+    <div class="bg-scene" aria-hidden="true">
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <div class="orb orb-c"></div>
+        <div class="grid-veil"></div>
+    </div>
+
+    <!-- Acrylic command bar -->
+    <header class="commandbar">
+        <div class="cb-inner">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true"><svg class="ic"><use href="#i-briefcase"/></svg></div>
+                <div class="brand-text">
+                    <strong>VacancyMonitor</strong>
+                    <span>jobs.dou.ua · трекер</span>
+                </div>
+            </div>
+            <div class="cb-right">
+                <div class="chip chip-clock" title="Поточний час">
+                    <svg class="ic-s"><use href="#i-clock"/></svg>
+                    <span class="mono" id="clock">--:--</span>
+                </div>
+                <div class="chip chip-status"><span class="dot-live"></span> Моніторинг активний</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-main">
+                <div class="hero-eyebrow"><span class="pulse-dot"></span> Панель моніторингу</div>
+
+                <h1 class="hero-title">
+                    Вакансії
+                    <svg class="sparkle" aria-hidden="true"><use href="#i-sparkle"/></svg>
+                </h1>
+                <svg class="title-underline" viewBox="0 0 120 8" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M2 6 C 30 1, 90 1, 118 5"/>
+                </svg>
+
+                <p class="hero-sub">
+                    Знайдено
+                    <b class="count" data-count="{{ total_count }}">{{ total_count }}</b>
+                    вакансій
                     {% if search_query or selected_category or selected_status or selected_is_active %}
                         за фільтром
                     {% endif %}
                 </p>
-            </div>
 
-            <div class="header-actions">
-                <a href="{% url 'scrap_data_view' %}" class="btn btn-primary">
-                    🚀 Запустити скрапінг
-                </a>
+                <div class="hero-actions">
+                    <a href="{% url 'scrap_data_view' %}" class="btn btn-accent btn-lg">
+                        <svg class="ic"><use href="#i-rocket"/></svg>
+                        Запустити скрапінг
+                    </a>
 
-                <form method="post"
-                      action="{% url 'delete_all_unactive_vacancies' %}"
-                      class="inline-form"
-                      onsubmit="return confirm('Видалити всі неактивні вакансії? Цю дію не можна буде скасувати.');">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">
-                        🗑 Видалити всі неактивні вакансії
-                    </button>
-                </form>
-            </div>
-        </header>
-
-        <form method="get" action="{% url 'scraped_data_view' %}" class="filters">
-            <div class="filters-grid">
-                <div>
-                    <label class="filter-label" for="search">Пошук</label>
-                    <input type="text"
-                           id="search"
-                           name="search"
-                           value="{{ search_query }}"
-                           placeholder="Назва вакансії або компанія">
+                    <form method="post"
+                          action="{% url 'delete_all_unactive_vacancies' %}"
+                          class="inline-form"
+                          onsubmit="return confirm('Видалити всі неактивні вакансії? Цю дію не можна буде скасувати.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger-subtle btn-lg">
+                            <svg class="ic"><use href="#i-trash"/></svg>
+                            Видалити всі неактивні вакансії
+                        </button>
+                    </form>
                 </div>
+            </div>
 
-                <div>
-                    <label class="filter-label" for="category">Категорія</label>
-                    <select id="category" name="category">
-                        <option value="">📂 Усі категорії</option>
-                        {% for cat in categories %}
-                            <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
-                                {{ cat }}
+            <!-- Decorative live scraper terminal -->
+            <div class="hero-term" aria-hidden="true">
+                <div class="term-bar">
+                    <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+                    <span class="term-title">dou-scraper — worker</span>
+                    <span class="term-live">live</span>
+                </div>
+                <div class="term-body">
+                    <p class="tl" style="--d:0"><span class="t-time">09:12:01</span> GET /jobs.dou.ua/companies <em>200 OK</em></p>
+                    <p class="tl" style="--d:1"><span class="t-time">09:12:03</span> parse :: 24 вакансії</p>
+                    <p class="tl" style="--d:2"><span class="t-time">09:12:07</span> GET /jobs.dou.ua/categories <em>200 OK</em></p>
+                    <p class="tl" style="--d:3"><span class="t-time">09:12:11</span> filter :: дублікати відсіяно</p>
+                    <p class="tl" style="--d:4"><span class="t-time">09:12:14</span> db :: INSERT batch <em>done</em></p>
+                    <p class="tl" style="--d:5"><span class="t-time">09:12:16</span> sync :: статуси оновлено <span class="t-caret"></span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="panel filters-panel">
+            <div class="panel-head">
+                <div class="panel-title">
+                    <span class="pi"><svg class="ic"><use href="#i-filter"/></svg></span>
+                    Фільтри
+                </div>
+                <span class="filters-hint">Підказка: натисніть <kbd>/</kbd> для швидкого пошуку</span>
+            </div>
+
+            <form method="get" action="{% url 'scraped_data_view' %}" class="filters">
+                <div class="filters-grid">
+                    <div class="field-block" style="--d:0">
+                        <label class="field-label" for="search">
+                            <svg class="ic-s"><use href="#i-search"/></svg> Пошук
+                        </label>
+                        <div class="search-wrap">
+                            <svg class="ic"><use href="#i-search"/></svg>
+                            <input type="text"
+                                   id="search"
+                                   name="search"
+                                   value="{{ search_query }}"
+                                   placeholder="Назва вакансії або компанія"
+                                   class="field">
+                            <span class="kbd-hint"><kbd>/</kbd></span>
+                        </div>
+                    </div>
+
+                    <div class="field-block" style="--d:1">
+                        <label class="field-label" for="category">
+                            <svg class="ic-s"><use href="#i-tag"/></svg> Категорія
+                        </label>
+                        <select id="category" name="category" class="field">
+                            <option value="">Усі категорії</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
+                                    {{ cat }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="field-block" style="--d:2">
+                        <label class="field-label" for="status">
+                            <svg class="ic-s"><use href="#i-circle-off"/></svg> Статус
+                        </label>
+                        <select id="status" name="status" class="field">
+                            <option value="">Усі статуси</option>
+
+                            {% for value, label in status_choices %}
+                                <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+
+                            <option value="none" {% if selected_status == "none" %}selected{% endif %}>
+                                Без статусу
                             </option>
-                        {% endfor %}
-                    </select>
-                </div>
+                        </select>
+                    </div>
 
-                <div>
-                    <label class="filter-label" for="status">Статус</label>
-                    <select id="status" name="status">
-                        <option value="">📋 Усі статуси</option>
-
-                        {% for value, label in status_choices %}
-                            <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>
-                                {{ label }}
+                    <div class="field-block" style="--d:3">
+                        <label class="field-label" for="is_active">
+                            <svg class="ic-s"><use href="#i-check"/></svg> Активність
+                        </label>
+                        <select id="is_active" name="is_active" class="field">
+                            <option value="">Усі</option>
+                            <option value="1" {% if selected_is_active == "1" %}selected{% endif %}>
+                                Активні
                             </option>
-                        {% endfor %}
+                            <option value="0" {% if selected_is_active == "0" %}selected{% endif %}>
+                                Неактивні
+                            </option>
+                        </select>
+                    </div>
 
-                        <option value="none" {% if selected_status == "none" %}selected{% endif %}>
-                            Без статусу
-                        </option>
-                    </select>
+                    <div class="filters-actions field-block" style="--d:4">
+                        <button type="submit" class="btn btn-accent">
+                            <svg class="ic"><use href="#i-search"/></svg>
+                            Шукати
+                        </button>
+                    </div>
                 </div>
 
-                <div>
-                    <label class="filter-label" for="is_active">Активність</label>
-                    <select id="is_active" name="is_active">
-                        <option value="">Усі</option>
-                        <option value="1" {% if selected_is_active == "1" %}selected{% endif %}>
-                            Активні
-                        </option>
-                        <option value="0" {% if selected_is_active == "0" %}selected{% endif %}>
-                            Неактивні
-                        </option>
-                    </select>
-                </div>
-
-                <div class="filters-actions">
-                    <button type="submit" class="btn btn-primary">
-                        Шукати
-                    </button>
-                </div>
-            </div>
-
-            {% if search_query or selected_category or selected_status or selected_is_active %}
-                <a href="{% url 'scraped_data_view' %}" class="reset-link">
-                    ✕ Скинути фільтри
-                </a>
-            {% endif %}
-        </form>
+                {% if search_query or selected_category or selected_status or selected_is_active %}
+                    <a href="{% url 'scraped_data_view' %}" class="reset-link">
+                        <svg class="ic-s"><use href="#i-x"/></svg> Скинути фільтри
+                    </a>
+                {% endif %}
+            </form>
+        </section>
 
         {% if vacancies %}
             <div class="vacancy-list">
                 {% for vacancy in vacancies %}
-                    <article class="vacancy-card">
-                        <h2 class="vacancy-title">
-                            <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer">
-                                {{ vacancy.name }}
-                            </a>
-                        </h2>
+                    <article class="vacancy-card reveal
+                                    {% if vacancy.is_active %}is-active{% else %}is-inactive{% endif %}
+                                    {% if vacancy.status == "applied" %}st-applied{% elif vacancy.status == "not_interested" %}st-not-interested{% endif %}"
+                             style="--i:{{ forloop.counter0 }}">
+                        <div class="vc-rail {% if vacancy.is_active %}rail-on{% else %}rail-off{% endif %}" aria-hidden="true"></div>
 
-                        <div class="vacancy-company">
-                            🏢 {{ vacancy.company.name }}
-                        </div>
+                        <div class="vc-body">
+                            <div class="vc-top">
+                                <div class="vc-avatar" aria-hidden="true">{{ vacancy.company.name|slice:":1" }}</div>
 
-                        <div class="vacancy-meta">
-                            {% if vacancy.publication_date %}
-                                <span class="badge badge-gray">
-                                    📅 {{ vacancy.publication_date|date:"d.m.Y" }}
-                                </span>
-                            {% endif %}
+                                <div class="vc-head">
+                                    <h2 class="vacancy-title">
+                                        <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer">
+                                            {{ vacancy.name }}<svg class="ext"><use href="#i-external"/></svg>
+                                        </a>
+                                    </h2>
 
-                            {% if vacancy.category %}
-                                <span class="badge badge-blue">
-                                    {{ vacancy.category }}
-                                </span>
-                            {% endif %}
+                                    <div class="vacancy-company">
+                                        <svg class="ic"><use href="#i-building"/></svg>
+                                        {{ vacancy.company.name }}
+                                    </div>
+                                </div>
+                            </div>
 
-                            {% if vacancy.status == "applied" %}
-                                <span class="badge badge-green">
-                                    ✅ Відгукнувся
-                                </span>
-                            {% elif vacancy.status == "not_interested" %}
-                                <span class="badge badge-red">
-                                    ❌ Не цікаво
-                                </span>
-                            {% else %}
-                                <span class="badge badge-gray">
-                                    ⚪ Без статусу
-                                </span>
-                            {% endif %}
+                            <div class="vacancy-meta">
+                                {% if vacancy.publication_date %}
+                                    <span class="badge badge-gray">
+                                        <svg class="ic-s"><use href="#i-calendar"/></svg>
+                                        {{ vacancy.publication_date|date:"d.m.Y" }}
+                                    </span>
+                                {% endif %}
 
-                            {% if vacancy.is_active %}
-                                <span class="badge badge-green">
-                                    🟢 Активна
-                                </span>
-                            {% else %}
-                                <span class="badge badge-red">
-                                    🔴 Неактивна
-                                </span>
-                            {% endif %}
-                        </div>
+                                {% if vacancy.category %}
+                                    <span class="badge badge-blue">
+                                        <svg class="ic-s"><use href="#i-tag"/></svg>
+                                        {{ vacancy.category }}
+                                    </span>
+                                {% endif %}
 
-                        <div class="vacancy-actions">
-                            <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-light">
-                                Переглянути на DOU →
-                            </a>
+                                {% if vacancy.status == "applied" %}
+                                    <span class="badge badge-green">
+                                        <svg class="ic-s"><use href="#i-check"/></svg> Відгукнувся
+                                    </span>
+                                {% elif vacancy.status == "not_interested" %}
+                                    <span class="badge badge-red">
+                                        <svg class="ic-s"><use href="#i-x"/></svg> Не цікаво
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-gray">
+                                        <svg class="ic-s"><use href="#i-circle-off"/></svg> Без статусу
+                                    </span>
+                                {% endif %}
 
-                            <form method="post"
-                                  action="{% url 'update_vacancy_status' vacancy.id %}"
-                                  class="status-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="applied">
-                                <button type="submit" class="btn btn-primary">
-                                    ✅ Відгукнувся
-                                </button>
-                            </form>
+                                {% if vacancy.is_active %}
+                                    <span class="badge badge-green">
+                                        <span class="dot pulse"></span> Активна
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-red">
+                                        <span class="dot"></span> Неактивна
+                                    </span>
+                                {% endif %}
+                            </div>
 
-                            <form method="post"
-                                  action="{% url 'update_vacancy_status' vacancy.id %}"
-                                  class="status-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="not_interested">
-                                <button type="submit" class="btn btn-secondary">
-                                    ❌ Не цікаво
-                                </button>
-                            </form>
+                            <div class="vacancy-actions">
+                                <a href="{{ vacancy.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-standard btn-sm">
+                                    Переглянути на DOU <svg class="ic-s"><use href="#i-external"/></svg>
+                                </a>
 
-                            {% if vacancy.status %}
-                                <form method="post"
-                                      action="{% url 'update_vacancy_status' vacancy.id %}"
-                                      class="status-form">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="status" value="">
-                                    <button type="submit" class="btn btn-light">
-                                        ⚪ Скинути статус
-                                    </button>
-                                </form>
-                            {% endif %}
+                                {% if vacancy.status != "applied" %}
+                                    <form method="post"
+                                          action="{% url 'update_vacancy_status' vacancy.id %}"
+                                          class="status-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="applied">
+                                        <button type="submit" class="btn btn-accent btn-sm"
+                                                {% if not vacancy.is_active %}disabled{% endif %}>
+                                            <svg class="ic-s"><use href="#i-check"/></svg> Відгукнувся
+                                        </button>
+                                    </form>
+                                {% endif %}
+
+                                {% if vacancy.status != "not_interested" %}
+                                    <form method="post"
+                                          action="{% url 'update_vacancy_status' vacancy.id %}"
+                                          class="status-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="not_interested">
+                                        <button type="submit" class="btn btn-standard btn-sm"
+                                                {% if not vacancy.is_active %}disabled{% endif %}>
+                                            <svg class="ic-s"><use href="#i-x"/></svg> Не цікаво
+                                        </button>
+                                    </form>
+                                {% endif %}
+
+                                {% if vacancy.status %}
+                                    <form method="post"
+                                          action="{% url 'update_vacancy_status' vacancy.id %}"
+                                          class="status-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="status" value="">
+                                        <button type="submit" class="btn btn-subtle btn-sm"
+                                                {% if not vacancy.is_active %}disabled{% endif %}>
+                                            <svg class="ic-s"><use href="#i-reset"/></svg> Скинути статус
+                                        </button>
+                                    </form>
+                                {% endif %}
+
+                                {% if not vacancy.is_active %}
+                                    <span class="lock-note" title="Вакансія неактивна — зміна статусу недоступна">
+                                        <svg class="ic-s"><use href="#i-lock"/></svg>
+                                        Дії заблоковано
+                                    </span>
+                                {% endif %}
+                            </div>
                         </div>
                     </article>
                 {% endfor %}
             </div>
 
             {% if vacancies.has_other_pages %}
-                <div class="pagination">
+                <nav class="pagination reveal-on-scroll" aria-label="Пагінація">
                     {% if vacancies.has_previous %}
                         <a href="?page=1{% if search_query %}&search={{ search_query|urlencode }}{% endif %}{% if selected_category %}&category={{ selected_category|urlencode }}{% endif %}{% if selected_status %}&status={{ selected_status|urlencode }}{% endif %}{% if selected_is_active %}&is_active={{ selected_is_active|urlencode }}{% endif %}">
                             « Перша
@@ -496,10 +419,30 @@
                         <span class="disabled">Наступна →</span>
                         <span class="disabled">Остання »</span>
                     {% endif %}
-                </div>
+                </nav>
             {% endif %}
         {% else %}
-            <div class="empty-state">
+            <div class="empty-state panel">
+                <div class="empty-art" aria-hidden="true">
+                    <svg viewBox="0 0 200 150" fill="none">
+                        <g class="e-monitor">
+                            <rect x="34" y="18" width="132" height="88" rx="10" fill="#ffffff" stroke="#d5dde6" stroke-width="2"/>
+                            <rect x="44" y="30" width="80" height="8" rx="4" fill="#e8f2fb"/>
+                            <rect x="44" y="46" width="112" height="6" rx="3" fill="#eef2f6"/>
+                            <rect x="44" y="58" width="96" height="6" rx="3" fill="#eef2f6"/>
+                            <rect x="44" y="70" width="104" height="6" rx="3" fill="#eef2f6"/>
+                            <path d="M84 106h32l6 14H78z" fill="#dde5ee"/>
+                        </g>
+                        <g class="e-mag">
+                            <circle cx="140" cy="92" r="24" fill="rgba(76,194,255,.12)" stroke="#0067c0" stroke-width="5"/>
+                            <path d="M158 110l16 16" stroke="#0067c0" stroke-width="6" stroke-linecap="round"/>
+                        </g>
+                        <path class="e-spark s1" d="M30 14l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#f5a623"/>
+                        <path class="e-spark s2" d="M178 30l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="#4cc2ff"/>
+                        <path class="e-spark s3" d="M16 84l1.4 3.4 3.4 1.4-3.4 1.4-1.4 3.4-1.4-3.4-3.4-1.4 3.4-1.4z" fill="#0067c0"/>
+                    </svg>
+                </div>
+
                 <h2>Вакансій не знайдено</h2>
 
                 {% if search_query or selected_category or selected_status or selected_is_active %}
@@ -514,12 +457,20 @@
                 {% endif %}
 
                 {% if not search_query and not selected_category and not selected_status and not selected_is_active %}
-                    <a href="{% url 'scrap_data_view' %}" class="btn btn-primary">
-                        🚀 Запустити скрапінг
+                    <a href="{% url 'scrap_data_view' %}" class="btn btn-accent btn-lg">
+                        <svg class="ic"><use href="#i-rocket"/></svg>
+                        Запустити скрапінг
                     </a>
                 {% endif %}
             </div>
         {% endif %}
-    </div>
+    </main>
+
+    <footer class="app-footer reveal-on-scroll">
+        <div>© VacancyMonitor — трекер вакансій для розробників</div>
+        <div class="mono">jobs.dou.ua · fluent ui</div>
+    </footer>
+
+    <script src="{% static 'js/win11.js' %}"></script>
 </body>
 </html>
