@@ -187,15 +187,7 @@ venv\Scripts\activate           # Windows
 pip install -r requirements.txt
 ```
 
-### 3. Configure the database *(optional)*
-
-The project uses `dj-database-url`. Set `DATABASE_URL` for PostgreSQL, or leave the default SQLite:
-
-```bash
-export DATABASE_URL=postgres://user:password@localhost:5432/vacancy_monitor
-```
-
-### 4. Migrate & Run
+### 3. Migrate & Run
 
 ```bash
 python manage.py migrate
